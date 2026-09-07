@@ -1,5 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        System.out.println("qq");
+        Habit habit = new Habit("Morning reading");
+        habit.editHabit();
+        habit.deleteHabit();
     }
 }
