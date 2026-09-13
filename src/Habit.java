@@ -38,10 +38,6 @@ public class Habit {
             completedDates.add(LocalDate.now());
             currentStreak++;
 
-            if (currentStreak > longestStreak) {
-                longestStreak = currentStreak;
-            }
-
             System.out.println("I'm proud of you buddy. You're a real legend today, keep it up!");
         } else if (habitComplete.equals("nah")) {
             System.out.println("You're kinda weak idk");
@@ -49,9 +45,38 @@ public class Habit {
             System.out.println("Please learn how to write properly");
         }
 
+        System.out.print("Did you do this habit earlier? (yeah/nah): ");
+        String habitCompletedEarlier = scanner.nextLine();
+
+        if (habitCompletedEarlier.equals("yeah")) {
+            while (true) {
+                System.out.print("Please write a date when you completed this habit (yyyy-mm-dd | press q to quit): ");
+                String habitCompletedDate = scanner.nextLine();
+
+                if (habitCompletedDate.equals("q")) {
+                    break;
+                } else {
+                    completedDates.add(LocalDate.parse(habitCompletedDate));
+                    currentStreak++;
+                }
+            }
+        } else if (habitCompletedEarlier.equals("nah")) {
+            System.out.println("What a loser");
+        } else {
+            System.out.println("Please learn how to write properly");
+        }
+
+        if (currentStreak > longestStreak) {
+            longestStreak = currentStreak;
+        }
+
         System.out.println("Your current streak is: " + currentStreak);
         System.out.println("Your longest streak is: " + longestStreak);
         System.out.println("Completed dates: " + completedDates);
+    }
+
+    public void calculateCurrentStreak() {
+
     }
 
     public void deleteHabit() {
