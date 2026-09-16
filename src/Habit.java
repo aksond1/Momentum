@@ -16,34 +16,19 @@ public class Habit {
         this.habitName = habitName;
         this.createdAt = LocalDateTime.now();
 
-        System.out.println("--------");
-        System.out.println("So, the new habit is: " + habitName);
-        System.out.println("Was created: " + createdAt);
+        System.out.println("The new habit \"" + habitName + "\" was created: "+ createdAt);
     }
 
     Scanner scanner = new Scanner(System.in);
 
     public void editHabit() {
-        System.out.print("Write new habit name: ");
+        System.out.print("Rename the habit \"" + habitName + "\" to: ");
         habitName = scanner.nextLine();
 
         System.out.println("Habit was successfully renamed to: " + habitName);
     }
 
     public void completeHabit() {
-        System.out.print("Did you do this habit today? (yeah/nah): ");
-        String habitComplete = scanner.nextLine();
-
-        if (habitComplete.equals("yeah")) {
-            completedDates.add(LocalDate.now());
-            calculateCurrentStreak();
-
-            System.out.println("I'm proud of you buddy. You're a real legend today, keep it up!");
-        } else if (habitComplete.equals("nah")) {
-            System.out.println("You're kinda weak idk");
-        } else {
-            System.out.println("Please learn how to write properly");
-        }
 
         System.out.print("Did you do this habit earlier? (yeah/nah): ");
         String habitCompletedEarlier = scanner.nextLine();
@@ -57,7 +42,7 @@ public class Habit {
                     break;
                 } else {
                     completedDates.add(LocalDate.parse(habitCompletedDate));
-                    calculateCurrentStreak();
+                    calculateStreaks();
                 }
             }
         } else if (habitCompletedEarlier.equals("nah")) {
@@ -67,15 +52,17 @@ public class Habit {
         }
 
         System.out.println("Your current streak is: " + currentStreak);
+        System.out.println("Your longest streak is: " + longestStreak);
         System.out.println("Completed dates: " + completedDates);
     }
 
-    public void calculateCurrentStreak() {
+    public void calculateStreaks() {
         if (completedDates.isEmpty()) {
             return;
         }
 
         currentStreak = 1;
+        longestStreak = 1;
 
         completedDates.sort(LocalDate::compareTo);
 
@@ -86,9 +73,12 @@ public class Habit {
             if (currentDate.equals(previousDate.plusDays(1))) {
                 currentStreak++;
             } else {
+                longestStreak = Math.max(longestStreak, currentStreak);
                 currentStreak = 1;
             }
         }
+
+        longestStreak = Math.max(longestStreak, currentStreak);
     }
 
     public void deleteHabit() {
