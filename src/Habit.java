@@ -71,10 +71,12 @@ public class Habit {
 
     public void calculateStreaks() {
         if (completedDates.isEmpty()) {
+            currentStreak = 0;
+            longestStreak = 0;
             return;
         }
 
-        currentStreak = 1;
+        int streak = 1;
         longestStreak = 1;
 
         completedDates.sort(LocalDate::compareTo);
@@ -84,14 +86,41 @@ public class Habit {
             LocalDate currentDate = completedDates.get(i);
 
             if (currentDate.equals(previousDate.plusDays(1))) {
-                currentStreak++;
+                streak++;
             } else {
-                longestStreak = Math.max(longestStreak, currentStreak);
-                currentStreak = 1;
+                longestStreak = Math.max(longestStreak, streak);
+                streak = 1;
             }
         }
 
-        longestStreak = Math.max(longestStreak, currentStreak);
+        longestStreak = Math.max(longestStreak, streak);
+
+        LocalDate today = LocalDate.now();
+        currentStreak = 0;
+
+        if (completedDates.contains(today)) {
+            currentStreak = 1;
+
+            LocalDate date = today.minusDays(1);
+
+            while (completedDates.contains(date)) {
+                currentStreak++;
+                date = date.minusDays(1);
+            }
+        }
+    }
+
+    public void removeCompletionDate(LocalDate date) {
+        if (completedDates.remove(date)) {
+            calculateStreaks();
+            System.out.println("Completion date removed");
+
+            System.out.println("Your current streak is: " + currentStreak);
+            System.out.println("Your longest streak is: " + longestStreak);
+            System.out.println("Completed dates: " + completedDates);
+        } else {
+            System.out.println("You didn't complete this habit on that day");
+        }
     }
 
     public void deleteHabit() {

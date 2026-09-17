@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
@@ -9,6 +10,9 @@ public class Main {
 
         habit.renameHabit();
         habit.completeHabit();
+
+        System.out.print("Write a completion date to remove: ");
+        habit.removeCompletionDate(LocalDate.parse(scan.nextLine()));
         habit.deleteHabit();
     }
 }
