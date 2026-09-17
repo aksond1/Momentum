@@ -7,7 +7,7 @@ public class Main {
         System.out.print("Write a habit name: ");
         Habit habit = new Habit(scan.nextLine());
 
-        habit.editHabit();
+        habit.renameHabit();
         habit.completeHabit();
         habit.deleteHabit();
     }

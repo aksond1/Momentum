@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +22,7 @@ public class Habit {
 
     Scanner scanner = new Scanner(System.in);
 
-    public void editHabit() {
+    public void renameHabit() {
         System.out.print("Rename the habit \"" + habitName + "\" to: ");
         habitName = scanner.nextLine();
 
@@ -40,9 +41,21 @@ public class Habit {
 
                 if (habitCompletedDate.equals("q")) {
                     break;
-                } else {
-                    completedDates.add(LocalDate.parse(habitCompletedDate));
+                }
+
+                try {
+                    LocalDate date = LocalDate.parse(habitCompletedDate);
+
+                    if (completedDates.contains(date)) {
+                        System.out.println("You've already completed this habit on that day");
+                        continue;
+                    }
+
+                    completedDates.add(date);
                     calculateStreaks();
+
+                } catch (DateTimeParseException e) {
+                    System.out.println("Please write the correct date");
                 }
             }
         } else if (habitCompletedEarlier.equals("nah")) {
