@@ -20,23 +20,22 @@ public class Habit {
         System.out.println("The new habit \"" + habitName + "\" was created: "+ createdAt);
     }
 
-    Scanner scanner = new Scanner(System.in);
-
-    public void renameHabit() {
+    public void renameHabit(Scanner scanner) {
         System.out.print("Rename the habit \"" + habitName + "\" to: ");
         habitName = scanner.nextLine();
 
         System.out.println("Habit was successfully renamed to: " + habitName);
     }
 
-    public void completeHabit() {
-
+    public void completeHabit(Scanner scanner) {
         System.out.print("Did you do this habit earlier? (yeah/nah): ");
         String habitCompletedEarlier = scanner.nextLine();
 
         if (habitCompletedEarlier.equals("yeah")) {
+
             while (true) {
-                System.out.print("Please write a date when you completed this habit (yyyy-mm-dd | press q to quit): ");
+                System.out.print("Please write a date when you completed this habit " + "(yyyy-mm-dd | press q to quit): ");
+
                 String habitCompletedDate = scanner.nextLine();
 
                 if (habitCompletedDate.equals("q")) {
@@ -58,15 +57,15 @@ public class Habit {
                     System.out.println("Please write the correct date");
                 }
             }
+
         } else if (habitCompletedEarlier.equals("nah")) {
-            System.out.println("What a loser");
+            System.out.println("You haven't completed this habit earlier.");
         } else {
             System.out.println("Please learn how to write properly");
         }
 
-        System.out.println("Your current streak is: " + currentStreak);
-        System.out.println("Your longest streak is: " + longestStreak);
-        System.out.println("Completed dates: " + completedDates);
+        calculateStreaks();
+        showStatistics();
     }
 
     public void calculateStreaks() {
@@ -76,10 +75,10 @@ public class Habit {
             return;
         }
 
+        completedDates.sort(LocalDate::compareTo);
+
         int streak = 1;
         longestStreak = 1;
-
-        completedDates.sort(LocalDate::compareTo);
 
         for (int i = 1; i < completedDates.size(); i++) {
             LocalDate previousDate = completedDates.get(i - 1);
@@ -95,8 +94,9 @@ public class Habit {
 
         longestStreak = Math.max(longestStreak, streak);
 
-        LocalDate today = LocalDate.now();
         currentStreak = 0;
+
+        LocalDate today = LocalDate.now();
 
         if (completedDates.contains(today)) {
             currentStreak = 1;
@@ -114,16 +114,38 @@ public class Habit {
         if (completedDates.remove(date)) {
             calculateStreaks();
             System.out.println("Completion date removed");
-
-            System.out.println("Your current streak is: " + currentStreak);
-            System.out.println("Your longest streak is: " + longestStreak);
-            System.out.println("Completed dates: " + completedDates);
         } else {
             System.out.println("You didn't complete this habit on that day");
         }
     }
 
-    public void deleteHabit() {
-        System.out.println("Habit \"" + habitName + "\" was deleted");
+    public void showStatistics() {
+        System.out.println();
+        System.out.println("Habit: " + habitName);
+        System.out.println("Created: " + createdAt);
+        System.out.println("Current streak: " + currentStreak);
+        System.out.println("Longest streak: " + longestStreak);
+        System.out.println("Completed dates: " + completedDates);
+        System.out.println();
+    }
+
+    public String getHabitName() {
+        return habitName;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public List<LocalDate> getCompletedDates() {
+        return completedDates;
+    }
+
+    public int getCurrentStreak() {
+        return currentStreak;
+    }
+
+    public int getLongestStreak() {
+        return longestStreak;
     }
 }
