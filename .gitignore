@@ -1,13 +1,25 @@
 # IntelliJ IDEA
 .idea/
 *.iml
-
-# Build output
 out/
+
+# Maven
 target/
 
 # Compiled Java files
 *.class
+
+# Environment variables
+.env
+.env.*
+
+# PostgreSQL / database dumps
+*.sql.backup
+*.dump
+*.backup
+
+# Local database data
+postgres-data/
 
 # Logs
 *.log
