@@ -2,7 +2,6 @@ package templates.task_tracker;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class Task {
 
@@ -20,12 +19,9 @@ public class Task {
     private String description;
     private String tag;
 
-    public Task(String taskName, TaskPriority priority, EffortLevel effortLevel, LocalDate dueDate) {
+    public Task(String taskName) {
         this.taskName = validateTaskName(taskName);
         this.status = TaskStatus.TODO;
-        this.priority =  Objects.requireNonNull(priority, "Priority cannot be null");
-        this.effortLevel = Objects.requireNonNull(effortLevel, "Effort level cannot be null");
-        this.dueDate = dueDate;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -37,32 +33,58 @@ public class Task {
         return status;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
+    }
+
     public TaskPriority getPriority() {
         return priority;
+    }
+
+    public void setEffortLevel(EffortLevel effortLevel) {
+        this.effortLevel = effortLevel;
     }
 
     public EffortLevel getEffortLevel() {
         return effortLevel;
     }
 
-    public LocalDate getDueDate() {
-        return dueDate;
+    public void setDueDate(LocalDate dueDate) {
+        validateDates(startDate, dueDate);
+        this.dueDate = dueDate;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
     public LocalDateTime getCompletedAt() {
         return completedAt;
     }
 
+    public void setStartDate(LocalDate startDate) {
+        validateDates(startDate, dueDate);
+        this.startDate = startDate;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public String getTag() {
@@ -73,30 +95,28 @@ public class Task {
         taskName = validateTaskName(newTaskName);
     }
 
-    public void changePriority(TaskPriority newPriority) {
-        priority = Objects.requireNonNull(newPriority, "Priority cannot be null");
+    public void removePriority() {
+        priority = null;
     }
 
-    public void changeEffortLevel(EffortLevel newEffortLevel) {
-        effortLevel = Objects.requireNonNull(newEffortLevel, "Effort level cannot be null");
+    public void removeEffortLevel() {
+        effortLevel = null;
     }
 
-    public void updateDescription(String newDescription) {
-        description = newDescription;
+    public void removeDescription() {
+        description = null;
     }
 
-    public void changeTag(String newTag) {
-        tag = newTag;
+    public void removeTag() {
+        tag = null;
     }
 
-    public void rescheduleStartDate(LocalDate newStartDate) {
-        validateDates(newStartDate, dueDate);
-        startDate = newStartDate;
+    public void removeStartDate() {
+        setStartDate(null);
     }
 
-    public void rescheduleDueDate(LocalDate newDueDate) {
-        validateDates(startDate, newDueDate);
-        dueDate = newDueDate;
+    public void removeDueDate() {
+        setDueDate(null);
     }
 
     public void start() {
@@ -132,8 +152,8 @@ public class Task {
         return taskName.trim();
     }
 
-    private void validateDates(LocalDate newStartDate, LocalDate newDueDate) {
-        if (newStartDate != null && newDueDate != null && newDueDate.isBefore(newStartDate)) {
+    private void validateDates(LocalDate startDate, LocalDate dueDate) {
+        if (startDate != null && dueDate != null && dueDate.isBefore(startDate)) {
             throw new IllegalArgumentException("Due date cannot be before start date");
         }
     }
