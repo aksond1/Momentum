@@ -1,4 +1,5 @@
 import templates.habit_tracker.HabitApp;
+import templates.task_tracker.TaskApp;
 
 import java.util.Scanner;
 
@@ -13,6 +14,7 @@ public class Main {
 
         switch (userInput) {
             case 1 -> new HabitApp().start();
+            case 2 -> new TaskApp().start();
             // there will be more cases for each template
             default -> System.out.println("Please write a correct input");
         }

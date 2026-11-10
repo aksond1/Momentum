@@ -2,6 +2,7 @@ package templates.task_tracker;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Scanner;
 
 public class Task {
 
@@ -91,8 +92,11 @@ public class Task {
         return tag;
     }
 
-    public void renameTask(String newTaskName) {
-        taskName = validateTaskName(newTaskName);
+    public void renameTask(Scanner scanner) {
+        System.out.print("Rename the task \"" + taskName + "\" to: ");
+        taskName = validateTaskName(scanner.nextLine());
+
+        System.out.println("Habit was successfully renamed to: " + taskName);
     }
 
     public void removePriority() {
@@ -143,6 +147,14 @@ public class Task {
 
         status = TaskStatus.DONE;
         completedAt = LocalDateTime.now();
+    }
+
+    public void showStatistics() {
+        System.out.println();
+        System.out.println("Task: " + taskName);
+        System.out.println("Created: " + createdAt);
+        System.out.println("Current status: " + status);
+        System.out.println();
     }
 
     private String validateTaskName(String taskName) {
